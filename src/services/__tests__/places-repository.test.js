@@ -1,5 +1,6 @@
 import * as httpClient from "../../data/http-client.js"
 import { getPlace } from "../places-repository.js";
+import placeService from "../places-service.js";
 
 afterEach(() => {
     // restore the spy created with spyOn
@@ -17,29 +18,36 @@ describe("places-repository", async () => {
             };
             const getMock = jest.spyOn(httpClient, "getPlace")
                 .mockResolvedValue(place);
+            const getOpeningHoursMock = jest.spyOn(placeService, "getOpeningHours")
+                .mockResolvedValue([]);
             
             // act
             const result = getPlace("does-not-matter");
 
             // assert
-            expect(getMock).toEqual({
+            expect(result).toEqual({
                 name: place.displayed_what,
                 address: place.displayed_where,
                 opening_hours: place.opening_hours
             });
+            expect(getMock).toHaveBeenCalledTimes(1);
+            expect(getOpeningHoursMock).toHaveBeenCalledTimes(1);
         });
 
         test("With non existent resource it should return null", async () => {
             // arrange
             const getMock = jest.spyOn(httpClient, "getPlace")
                 .mockResolvedValue(null);
-            
+            const getOpeningHoursMock = jest.spyOn(placeService, "getOpeningHours")
+                .mockResolvedValue([]);
 
             // act
             const result = getPlace("does-not-matter");
 
             // assert
-            expect(getMock).toEqual(null);
+            expect(result).toEqual(null);
+            expect(getMock).toHaveBeenCalledTimes(1);
+            expect(getOpeningHoursMock).toHaveBeenCalledTimes(0);
         });
     });
 });
