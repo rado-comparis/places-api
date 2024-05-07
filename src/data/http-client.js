@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { httpCode } from '../responses/http-codes';
+import { httpCode } from '../responses/http-codes.js';
 
 export const get = async function (url) {
     const response = await fetch(url, {

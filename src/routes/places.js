@@ -25,8 +25,6 @@ router.get("/:id", async (req, res, next) => {
         }
         const post = await getPlace(req.params.id);
       
-        console.log({post});
-      
         if (!post) {
           return notFound(res);
         }

@@ -20,17 +20,18 @@ export const createPlace = function (place) {
 }
 
 const group = function (inputArr) {
-    var grouppedArr = [];
-  var index = -1;
-  for(var i=0; i < inputArr.length; i++) {
-    var day = inputArr[i];
+    let grouppedArr = [];
+    let index = -1;
+  for(let i=0; i < inputArr.length; i++) {
+    const day = inputArr[i];
     if(index == -1 || !equals(grouppedArr[index].hours, day.hours)) {
         grouppedArr.push({ 
             days:[day.day],
             hours:day.hours 
         });
         index++;
-    } else {
+    } 
+    else {
         grouppedArr[index].days.push(day.day);
     }
   }
@@ -38,8 +39,18 @@ const group = function (inputArr) {
 }
 
 const format = function (arr) {
-    // TODO 
-    return arr;
+    let lines = [];
+   for(let i = 0; i < arr.length; i++) {
+     const line = arr[i];
+     const days = line.days;
+     if(days.length == 1) {
+       lines.push({ days : days[0], hours: line.hours });
+     } 
+     else {
+       lines.push({ days:days[0] + "-" + days[days.length-1] , hours: line.hours });
+     }
+   }
+   return lines;
 }
 
 const flatten = function (openingHoursDays) {
@@ -58,7 +69,7 @@ const flatten = function (openingHoursDays) {
         else {
             weekDaysHours.push({
                 "day": prop,
-                "hours": "closed"
+                "hours": [ "closed" ]
             })
         }
     }
